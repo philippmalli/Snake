@@ -8,10 +8,29 @@ project(
 set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(FTXUI)
-add_executable(Snake_Game src/main.cpp)
+add_executable(Snake_Game src/main.cpp
+                      src/Boundary.h 
+                      src/Constants.h 
+                      src/Position.h 
+                      src/KeyMapping.h 
+                      src/KeyMapping.cpp
+                      src/Player.h
+                      src/Player.cpp
+                      src/CanvasItem.h
+                      src/CanvasItem.cpp
+                      src/Canvas.h
+                      src/Canvas.cpp
+                      src/GameController.h
+                      src/GameController.cpp
+                      src/KeyMapping.h
+                      src/KeyMapping.cpp
+                      src/KeyboardInputHandler.h
+                      src/KeyboardInputHandler.cpp)
 
 target_link_libraries(Snake_Game 
     PRIVATE ftxui::screen
     PRIVATE ftxui::dom
     PRIVATE ftxui::component
 )
+
+target_compile_options(Snake_Game PRIVATE -Wall -Wextra -Weffc++ -Wpedantic )
