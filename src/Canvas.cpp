@@ -40,6 +40,28 @@ std::vector<std::string> Canvas::GenerateView() const
 	return result;
 }
 
+ftxui::Element Canvas::CreateView()const
+{
+	ftxui::Elements lines;
+
+	int currentCursorPositonX = 0;
+
+	std::stringstream stream;
+
+	for (CanvasItem item : area) 
+	{
+		stream << item.GetCharacter() << ' ';
+		if (++currentCursorPositonX >= CANVAS_WIDTH) 
+		{
+			lines.push_back(ftxui::text(stream.str()));
+			stream.str(""); 
+			currentCursorPositonX = 0;
+		}
+	}
+
+	return ftxui::window(ftxui::text("Snake"),ftxui::vbox(lines));
+}
+
 void Canvas::SetBorder() 
 {
 	for (int x = 0; x < CANVAS_WIDTH; x++) 

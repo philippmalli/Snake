@@ -7,6 +7,17 @@ project(
 
 set(CMAKE_CXX_STANDARD 20)
 
+find_program(CMAKE_CXX_CPPCHECK NAMES cppcheck)
+if (CMAKE_CXX_CPPCHECK)
+    list(
+        APPEND CMAKE_CXX_CPPCHECK 
+            "--enable=warning"
+            "--inconclusive"
+            "--force" 
+            "--inline-suppr"
+    )
+endif()
+
 add_subdirectory(FTXUI)
 add_executable(Snake_Game src/main.cpp
                       src/Boundary.h 
@@ -34,3 +45,4 @@ target_link_libraries(Snake_Game
 )
 
 target_compile_options(Snake_Game PRIVATE -Wall -Wextra -Weffc++ -Wpedantic )
+

@@ -42,6 +42,8 @@ public:
 	/// </summary>
 	void Run();
 
+	ftxui::Element currentView {};
+
 	std::vector<std::string> currentOutputText {};
 
 private:

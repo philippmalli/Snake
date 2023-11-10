@@ -4,6 +4,8 @@
 #include <array>
 #include <vector>
 
+#include "ftxui/dom/elements.hpp"
+
 #include "Constants.h"
 #include "CanvasItem.h"
 #include "Position.h"
@@ -51,6 +53,8 @@ public:
 	std::string Draw() const;
 
 	std::vector<std::string> GenerateView() const;
+
+	ftxui::Element CreateView()const;
 
 private:
 	/// <summary>

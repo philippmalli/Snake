@@ -9,12 +9,7 @@ void GameController::Run()
 
 	auto renderer =  ftxui::Renderer([&]
 	{
-		ftxui::Elements canvasLines;
-		for(auto line : currentOutputText)
-		{
-			canvasLines.push_back(ftxui::text(line));
-		}
-		return ftxui::window(ftxui::text("Snake"), ftxui::vbox(canvasLines) );
+		return currentView;
   	});
 
 	renderer |= ftxui::CatchEvent([&](ftxui::Event event)
@@ -127,6 +122,8 @@ void GameController::Draw()
 	canvas.AddFruit(fruits);
 
 	currentOutputText = canvas.GenerateView();
+
+	currentView = canvas.CreateView();
 
 	if (!fruits.empty())
 	{
