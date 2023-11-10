@@ -1,7 +1,9 @@
-#include <iostream>
+#include "GameController.h"
 
 int main()
 {
-    std::cout<<"Hello World"<<std::endl;
+    GameController game{};
+    game.Run();
+
     return 0;
 }
