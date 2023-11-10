@@ -9,7 +9,12 @@ void GameController::Run()
 
 	auto renderer =  ftxui::Renderer([&]
 	{
-		return ftxui::window(ftxui::text("Snake"), ftxui::text(currentOutputText) );
+		ftxui::Elements canvasLines;
+		for(auto line : currentOutputText)
+		{
+			canvasLines.push_back(ftxui::text(line));
+		}
+		return ftxui::window(ftxui::text("Snake"), ftxui::vbox(canvasLines) );
   	});
 
 	renderer |= ftxui::CatchEvent([&](ftxui::Event event)
@@ -18,27 +23,32 @@ void GameController::Run()
 		return true;
 	});
 
-	ftxui::Loop loop(&screen, renderer);
+	std::thread myThread ([&](){screen.Loop(renderer);});
 
-	while (action == GameAction::Continue && !loop.HasQuitted() )
+	while (action == GameAction::Continue) // && !loop.HasQuitted() )
 	{
 		const auto timerStart = std::chrono::high_resolution_clock::now();
+		// loop.RunOnce();
+
 		snake.UpdatePosition();
 		HandleCollision();
 		Draw();
-
-		loop.RunOnce();
-
-
+		
+		screen.PostEvent(ftxui::Event::Custom);
 
 		turnsSinceFruitSpawn++;
 
 		const auto timerEnd = std::chrono::high_resolution_clock::now();
 		const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(timerEnd - timerStart);
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(150) - duration);
-
+		std::this_thread::sleep_for(std::chrono::milliseconds(200) - duration);
 	}
+
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+
+	screen.Exit();
+	myThread.join();
 
 	return;
 }
@@ -116,7 +126,7 @@ void GameController::Draw()
 	canvas.AddPlayer(snake.GetHeadPosition());
 	canvas.AddFruit(fruits);
 
-	currentOutputText = canvas.Draw();
+	currentOutputText = canvas.GenerateView();
 
 	if (!fruits.empty())
 	{

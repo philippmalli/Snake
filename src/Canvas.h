@@ -50,6 +50,8 @@ public:
 	/// </summary>
 	std::string Draw() const;
 
+	std::vector<std::string> GenerateView() const;
+
 private:
 	/// <summary>
 	/// set a sprite directly on playing field

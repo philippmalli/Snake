@@ -19,6 +19,27 @@ std::string Canvas::Draw() const
 	return stream.str();
 }
 
+std::vector<std::string> Canvas::GenerateView() const
+{
+	std::vector<std::string> result {};
+	int currentCursorPositonX = 0;
+
+	std::stringstream stream;
+
+	for (CanvasItem item : area) 
+	{
+		stream << item.GetCharacter() << ' ';
+		if (++currentCursorPositonX >= CANVAS_WIDTH) 
+		{
+			result.push_back(stream.str());
+			stream.str(""); 
+			currentCursorPositonX = 0;
+		}
+	}
+
+	return result;
+}
+
 void Canvas::SetBorder() 
 {
 	for (int x = 0; x < CANVAS_WIDTH; x++) 

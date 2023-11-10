@@ -42,7 +42,7 @@ public:
 	/// </summary>
 	void Run();
 
-	std::string currentOutputText = "";
+	std::vector<std::string> currentOutputText {};
 
 private:
 	/// <summary>
