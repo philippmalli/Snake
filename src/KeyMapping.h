@@ -1,26 +1,16 @@
 #pragma once
 
-#include <string>
 #include "ftxui/component/event.hpp"
-// #include "cpp-terminal/key.hpp"
+#include <string>
 
-/// <summary>
-/// define possble actions on keys
-/// </summary>
-enum class KeyAction {Up, Down, Left, Right, Exit, Any};
-
-/// <summary>
-/// get key from the entered character
-/// </summary>
-/// <param name="enteredCharacter"></param>
-/// <returns></returns>
-KeyAction getKeyFromChar(char enteredCharacter);
+enum class KeyAction
+{
+  Up,
+  Down,
+  Left,
+  Right,
+  Exit,
+  Any
+};
 
 KeyAction getKeyActionFromEvent(ftxui::Event event);
-
-// KeyAction getActionFromKey(Term::Key key);
-
-/// <summary>
-///
-///  /// </summary>/// <param name="key"></param>/// <returns></returns>
-std::string keyToString(KeyAction key);

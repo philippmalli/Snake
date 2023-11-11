@@ -2,140 +2,121 @@
 
 void GameController::Run()
 {
-	KeyboardInputHandler inputHandler(snake,action);
-	SpawnFruit();
+  KeyboardInputHandler inputHandler(snake, action);
+  SpawnFruit();
 
-	auto screen = ftxui::ScreenInteractive::FitComponent();
+  auto screen = ftxui::ScreenInteractive::FitComponent();
 
-	auto renderer =  ftxui::Renderer([&]
-	{
-		return currentView;
-  	});
+  auto renderer = ftxui::Renderer([&] { return currentView; });
 
-	renderer |= ftxui::CatchEvent([&](ftxui::Event event)
-	{
-		inputHandler.ProcessInput(event);
-		return true;
-	});
+  renderer |= ftxui::CatchEvent(
+    [&](ftxui::Event event)
+    {
+      inputHandler.ProcessInput(event);
+      return true;
+    });
 
-	std::thread myThread ([&](){screen.Loop(renderer);});
+  std::thread myThread([&]() { screen.Loop(renderer); });
 
-	while (action == GameAction::Continue) // && !loop.HasQuitted() )
-	{
-		const auto timerStart = std::chrono::high_resolution_clock::now();
-		// loop.RunOnce();
+  while (action == GameAction::Continue)// && !loop.HasQuitted() )
+  {
+    const auto timerStart = std::chrono::high_resolution_clock::now();
+    // loop.RunOnce();
 
-		snake.UpdatePosition();
-		HandleCollision();
-		Draw();
-		
-		screen.PostEvent(ftxui::Event::Custom);
+    snake.UpdatePosition();
+    HandleCollision();
+    Draw();
 
-		turnsSinceFruitSpawn++;
+    screen.PostEvent(ftxui::Event::Custom);
 
-		const auto timerEnd = std::chrono::high_resolution_clock::now();
-		const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(timerEnd - timerStart);
+    turnsSinceFruitSpawn++;
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(200) - duration);
-	}
+    const auto timerEnd = std::chrono::high_resolution_clock::now();
+    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(timerEnd - timerStart);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(200) - duration);
+  }
 
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+  std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 
-	screen.Exit();
-	myThread.join();
+  screen.Exit();
+  myThread.join();
 
-	return;
+  return;
 }
 
 void GameController::SpawnFruit()
 {
-	bool success{ false };
-	while (!success)
-	{
-		Position position{
-			.x = rngDistX(rngEngine),
-			.y = rngDistY(rngEngine)
-		};
-		if (DetectCollison(position, snake.GetTail()) == CollisionResult::NoCollision)
-		{
-			fruits.push_back(std::move(position));
-			success = true;
-		}
-	}
+  bool success{ false };
+  while (!success)
+  {
+    Position position{ .x = rngDistX(rngEngine), .y = rngDistY(rngEngine) };
+    if (DetectCollison(position, snake.GetTail()) == CollisionResult::NoCollision)
+    {
+      fruits.push_back(std::move(position));
+      success = true;
+    }
+  }
 
-	turnsSinceFruitSpawn = 0;
+  turnsSinceFruitSpawn = 0;
 }
 
 void GameController::HandleCollision()
 {
-	if (snake.ColllidedWithEdge())
-	{
-		action = GameAction::ExitGame;
-		return;
-	}
+  if (snake.ColllidedWithEdge())
+  {
+    action = GameAction::ExitGame;
+    return;
+  }
 
-	const auto playerPosition = snake.GetHeadPosition();
-	HandleCollisionFruit(playerPosition);
+  const auto playerPosition = snake.GetHeadPosition();
+  HandleCollisionFruit(playerPosition);
 
-	const auto tailCollision = DetectCollison(playerPosition, snake.GetTailCollider());
-	if (tailCollision == CollisionResult::Collision)
-	{
-		action = GameAction::ExitGame;
-	}
+  const auto tailCollision = DetectCollison(playerPosition, snake.GetTailCollider());
+  if (tailCollision == CollisionResult::Collision) { action = GameAction::ExitGame; }
 }
 
-void GameController::HandleCollisionFruit(const Position& playerPosition)
+void GameController::HandleCollisionFruit(const Position &playerPosition)
 {
-	const auto fruitIterator = std::find_if(fruits.begin(), fruits.end(), [playerPosition](auto position) {return playerPosition == position; });
+  const auto fruitIterator =
+    std::find_if(fruits.begin(), fruits.end(), [playerPosition](auto position) { return playerPosition == position; });
 
-	if (fruitIterator != std::end(fruits))
-	{
-		snake.shouldAddSegment = true;
-		score += GetScore();
-		fruits.erase(fruitIterator);
-		SpawnFruit();
-	}
+  if (fruitIterator != std::end(fruits))
+  {
+    snake.shouldAddSegment = true;
+    score += CalculateScoreIncrement();
+    fruits.erase(fruitIterator);
+    SpawnFruit();
+  }
 }
 
-CollisionResult GameController::DetectCollison(const Position& playerPosition, const std::vector<Position> colliders) const
+CollisionResult GameController::DetectCollison(const Position &playerPosition,
+  const std::vector<Position> &colliders) const
 {
-	if (colliders.empty())
-	{
-		return CollisionResult::NoCollision;
-	}
-	const auto colliderIterator = std::find_if(colliders.begin(), colliders.end(), [playerPosition](auto colliderPosition) {return playerPosition == colliderPosition; });
+  if (colliders.empty()) { return CollisionResult::NoCollision; }
+  const auto colliderIterator = std::find_if(colliders.begin(),
+    colliders.end(),
+    [playerPosition](auto colliderPosition) { return playerPosition == colliderPosition; });
 
-	if (colliderIterator != std::end(colliders))
-	{
-		return CollisionResult::Collision;
-	}
-	return CollisionResult::NoCollision;
+  if (colliderIterator != std::end(colliders)) { return CollisionResult::Collision; }
+  return CollisionResult::NoCollision;
 }
 
 void GameController::Draw()
 {
-	Canvas canvas{};
-	canvas.SetBorder();
-	canvas.AddTail(snake.GetTail());
-	canvas.AddPlayer(snake.GetHeadPosition());
-	canvas.AddFruit(fruits);
+  Canvas canvas{};
+  canvas.SetBorder();
+  canvas.AddTail(snake.GetTail());
+  canvas.AddPlayer(snake.GetHeadPosition());
+  canvas.AddFruit(fruits);
+  canvas.SetScore(score);
 
-	currentOutputText = canvas.GenerateView();
-
-	currentView = canvas.CreateView();
-
-	if (!fruits.empty())
-	{
-		// Term::cout << "Score: " << score << std::endl;
-	}
+  currentView = canvas.CreateView();
 }
 
-int GameController::GetScore()
+int GameController::CalculateScoreIncrement()
 {
-	if (turnsSinceFruitSpawn > 99)
-	{
-		turnsSinceFruitSpawn = 99;
-	}
-	return 10 - (turnsSinceFruitSpawn / 10);
+  if (turnsSinceFruitSpawn > 99) { turnsSinceFruitSpawn = 99; }
+  return 10 - (turnsSinceFruitSpawn / 10);
 }
