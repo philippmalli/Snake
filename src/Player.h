@@ -40,5 +40,7 @@ private:
 	void UpdateDirection();
 	bool MoveHead();
 	void MoveTail();
+
+	bool IsNewDirectionValid() const;
 };
 

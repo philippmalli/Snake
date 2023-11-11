@@ -22,7 +22,10 @@ std::vector<Position> Player::GetTailCollider() const
 
 void Player::UpdateDirection()
 {
-	currentDirection = nextDirection;
+	if(IsNewDirectionValid())
+	{
+		currentDirection = nextDirection;
+	}
 }
 
 bool Player::MoveHead()
@@ -107,4 +110,27 @@ void Player::NewInput(KeyAction key)
 	default:
 		break;
 	}
+}
+
+bool Player::IsNewDirectionValid() const
+{
+	if(tail.size() <= 2)
+	{
+		return true;
+	}
+
+	switch(currentDirection)
+	{
+		case Direction::Down:
+			return nextDirection != Direction::Up;
+		case Direction::Up:
+			return nextDirection != Direction::Down;
+		case Direction::Left:
+			return nextDirection != Direction::Right;
+		case Direction::Right:
+			return nextDirection != Direction::Left;
+		default:
+			break;
+	}
+	return true;
 }
