@@ -59,7 +59,12 @@ ftxui::Element Canvas::CreateView()const
 		}
 	}
 
-	return ftxui::window(ftxui::text("Snake"),ftxui::vbox(lines));
+	ftxui::Element gameWindow = ftxui::window(ftxui::text("Snake"),ftxui::vbox(lines));
+	ftxui::Element scoreWindow = ftxui::window(ftxui::text("score"),ftxui::text( std::to_string(score)  ));
+
+	ftxui::Element result = ftxui::hbox(gameWindow,ftxui::vbox(scoreWindow, ftxui::filler()));
+
+	return result;
 }
 
 void Canvas::SetBorder() 

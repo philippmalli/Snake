@@ -19,7 +19,7 @@ public:
 	/// <summary>
 	/// 1-D array to represent every slot of the playing field
 	/// </summary>
-	std::array<CanvasItem, CANVAS_WIDTH * CANVAS_HEIGHT> area;
+	std::array<CanvasItem, CANVAS_WIDTH * CANVAS_HEIGHT> area {};
 
 	/// <summary>
 	/// set the positions of "border" sprites
@@ -47,6 +47,11 @@ public:
 	/// <param name="fruits"></param>
 	void AddFruit(std::vector<Position> fruits);
 
+	void SetScore(int score)
+	{
+		this->score = score;
+	}
+
 	/// <summary>
 	/// draw all elements on playing field to screen
 	/// </summary>
@@ -57,6 +62,7 @@ public:
 	ftxui::Element CreateView()const;
 
 private:
+int score {0};
 	/// <summary>
 	/// set a sprite directly on playing field
 	/// </summary>

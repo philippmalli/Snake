@@ -44,5 +44,5 @@ target_link_libraries(Snake_Game
     PRIVATE ftxui::component
 )
 
-target_compile_options(Snake_Game PRIVATE -Wall -Wextra -Weffc++ -Wpedantic )
+target_compile_options(Snake_Game PRIVATE -Wall -Wextra -Weffc++ -Wpedantic -Wunused )
 

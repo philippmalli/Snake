@@ -120,15 +120,17 @@ void GameController::Draw()
 	canvas.AddTail(snake.GetTail());
 	canvas.AddPlayer(snake.GetHeadPosition());
 	canvas.AddFruit(fruits);
+	canvas.SetScore(score);
 
 	currentOutputText = canvas.GenerateView();
 
 	currentView = canvas.CreateView();
 
-	if (!fruits.empty())
-	{
-		// Term::cout << "Score: " << score << std::endl;
-	}
+
+	// if (!fruits.empty())
+	// {
+	// 	// Term::cout << "Score: " << score << std::endl;
+	// }
 }
 
 int GameController::GetScore()
