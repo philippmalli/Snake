@@ -1,9 +1,6 @@
 #pragma once
 #include <cstdint>
 
-/// <summary>
-/// define the boundary of the playing field
-/// </summary>
 struct Boundary
 {
 	uint16_t xMin;

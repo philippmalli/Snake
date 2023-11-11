@@ -92,13 +92,13 @@ void GameController::HandleCollisionFruit(const Position& playerPosition)
 	if (fruitIterator != std::end(fruits))
 	{
 		snake.shouldAddSegment = true;
-		score += GetScore();
+		score += CalculateScoreIncrement();
 		fruits.erase(fruitIterator);
 		SpawnFruit();
 	}
 }
 
-CollisionResult GameController::DetectCollison(const Position& playerPosition, const std::vector<Position> colliders) const
+CollisionResult GameController::DetectCollison(const Position& playerPosition, const std::vector<Position>& colliders) const
 {
 	if (colliders.empty())
 	{
@@ -122,18 +122,10 @@ void GameController::Draw()
 	canvas.AddFruit(fruits);
 	canvas.SetScore(score);
 
-	currentOutputText = canvas.GenerateView();
-
 	currentView = canvas.CreateView();
-
-
-	// if (!fruits.empty())
-	// {
-	// 	// Term::cout << "Score: " << score << std::endl;
-	// }
 }
 
-int GameController::GetScore()
+int GameController::CalculateScoreIncrement()
 {
 	if (turnsSinceFruitSpawn > 99)
 	{

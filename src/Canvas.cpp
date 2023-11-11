@@ -1,45 +1,5 @@
 #include "Canvas.h"
 
-std::string Canvas::Draw() const
-{
-	int currentCursorPositonX = 0;
-
-	std::stringstream stream;
-
-	for (CanvasItem item : area) 
-	{
-		stream << item.GetCharacter() << ' ';
-		if (++currentCursorPositonX >= CANVAS_WIDTH) 
-		{
-			stream << "\n";
-			currentCursorPositonX = 0;
-		}
-	}
-
-	return stream.str();
-}
-
-std::vector<std::string> Canvas::GenerateView() const
-{
-	std::vector<std::string> result {};
-	int currentCursorPositonX = 0;
-
-	std::stringstream stream;
-
-	for (CanvasItem item : area) 
-	{
-		stream << item.GetCharacter() << ' ';
-		if (++currentCursorPositonX >= CANVAS_WIDTH) 
-		{
-			result.push_back(stream.str());
-			stream.str(""); 
-			currentCursorPositonX = 0;
-		}
-	}
-
-	return result;
-}
-
 ftxui::Element Canvas::CreateView()const
 {
 	ftxui::Elements lines;
@@ -98,7 +58,6 @@ void Canvas::SetSprite(Position position, Sprite pixel)
 	const int index = position.x + position.y * CANVAS_WIDTH;
 	SetSprite(index, pixel);
 }
-
 
 void Canvas::AddTail(std::vector<Position> tail) 
 {

@@ -67,7 +67,6 @@ bool Player::ColllidedWithEdge() const
 	if (position.x <= CANVAS_BOUNDS.xMin)
 	{
 		return true;
-
 	}
 
 	if (position.x >= CANVAS_BOUNDS.xMax)
