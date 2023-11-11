@@ -2,19 +2,20 @@
 
 #include "ftxui/component/event.hpp"
 
-#include "KeyMapping.h"
 #include "Constants.h"
+#include "KeyMapping.h"
 #include "Player.h"
 
 class KeyboardInputHandler
 {
 public:
-	Player& player;
+  Player &player;
 
-	std::atomic<GameAction>& action;
+  std::atomic<GameAction> &action;
 
-	KeyboardInputHandler(Player& playerObj, std::atomic<GameAction>& gameAction) : player(playerObj), action(gameAction)
-	{}
+  KeyboardInputHandler(Player &playerObj, std::atomic<GameAction> &gameAction) : player(playerObj), action(gameAction)
+  {
+  }
 
-	void ProcessInput(ftxui::Event event) const;
+  void ProcessInput(ftxui::Event event) const;
 };

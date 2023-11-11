@@ -1,13 +1,13 @@
 #pragma once
-#include <string>
-#include <sstream>
 #include <array>
+#include <sstream>
+#include <string>
 #include <vector>
 
 #include "ftxui/dom/elements.hpp"
 
-#include "Constants.h"
 #include "CanvasItem.h"
+#include "Constants.h"
 #include "Position.h"
 
 /// <summary>
@@ -16,45 +16,38 @@
 class Canvas
 {
 public:
-	/// <summary>
-	/// 1-D array to represent every slot of the playing field
-	/// </summary>
-	std::array<CanvasItem, CANVAS_WIDTH * CANVAS_HEIGHT> area {};
+  /// <summary>
+  /// 1-D array to represent every slot of the playing field
+  /// </summary>
+  std::array<CanvasItem, CANVAS_WIDTH * CANVAS_HEIGHT> area{};
 
-	void SetBorder();
+  void SetBorder();
 
-	inline void AddPlayer(Position position)
-	{
-		SetSprite(position, Sprite::Player);
-	}
+  inline void AddPlayer(Position position) { SetSprite(position, Sprite::Player); }
 
-	void AddTail(std::vector<Position> tail);
+  void AddTail(std::vector<Position> tail);
 
-	void AddFruit(std::vector<Position> fruits);
+  void AddFruit(std::vector<Position> fruits);
 
-	void SetScore(int score)
-	{
-		this->score = score;
-	}
+  void SetScore(int score) { this->score = score; }
 
-	// /// <summary>
-	// /// draw all elements on playing field to screen
-	// /// </summary>
-	// std::string Draw() const;
+  // /// <summary>
+  // /// draw all elements on playing field to screen
+  // /// </summary>
+  // std::string Draw() const;
 
-	// std::vector<std::string> GenerateView() const;
+  // std::vector<std::string> GenerateView() const;
 
-	ftxui::Element CreateView()const;
+  ftxui::Element CreateView() const;
 
 private:
-	
-	int score {0};
+  int score{ 0 };
 
-	void SetSprite(int index, Sprite pixel);
+  void SetSprite(int index, Sprite pixel);
 
-	void SetSprite(int x, int y, Sprite pixel);
+  void SetSprite(int x, int y, Sprite pixel);
 
-	void SetSprite(Position position, Sprite pixel);
+  void SetSprite(Position position, Sprite pixel);
 
-	static void ClearScreen();
+  static void ClearScreen();
 };
