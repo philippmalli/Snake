@@ -36,7 +36,9 @@ void GameController::Run()
 
     std::this_thread::sleep_for(std::chrono::milliseconds(200) - duration);
   }
-
+  
+  DrawGameOverScreen();
+  screen.PostEvent(ftxui::Event::Custom);
 
   std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 
@@ -113,6 +115,18 @@ void GameController::Draw()
   canvas.SetScore(score);
 
   currentView = canvas.CreateView();
+}
+
+void GameController::DrawGameOverScreen()
+{
+  Canvas canvas{};
+  canvas.SetBorder();
+  canvas.AddTail(snake.GetTail());
+  canvas.AddPlayer(snake.GetHeadPosition());
+  canvas.AddFruit(fruits);
+  canvas.SetScore(score);
+
+  currentView = canvas.CreateGameOverScreen();
 }
 
 int GameController::CalculateScoreIncrement()

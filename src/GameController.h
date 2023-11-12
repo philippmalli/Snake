@@ -53,5 +53,7 @@ private:
 
   void Draw();
 
+  void DrawGameOverScreen();
+
   int CalculateScoreIncrement();
 };

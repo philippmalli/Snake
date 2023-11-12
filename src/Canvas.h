@@ -31,14 +31,9 @@ public:
 
   void SetScore(int score) { this->score = score; }
 
-  // /// <summary>
-  // /// draw all elements on playing field to screen
-  // /// </summary>
-  // std::string Draw() const;
-
-  // std::vector<std::string> GenerateView() const;
-
   ftxui::Element CreateView() const;
+
+  ftxui::Element CreateGameOverScreen() const;
 
 private:
   int score{ 0 };
