@@ -39,3 +39,6 @@ else()
     target_compile_options(Snake_Game PRIVATE -O3 -Wall -Wextra -Weffc++ -Wpedantic -Wunused )
 endif()
 
+add_custom_target(cppcheck ALL COMMAND cppcheck --enable=all ../src)
+add_custom_target(clang-format ALL COMMAND clang-format --style=file -i ../src/*
+)
