@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
 
 project(
   Snake_Game
@@ -36,9 +36,9 @@ target_link_libraries(Snake_Game
 if(MSVC)
     target_compile_options(Snake_Game PRIVATE /W4)
 else()
-    target_compile_options(Snake_Game PRIVATE -O3 -Wall -Wextra -Weffc++ -Wpedantic -Wunused )
+    target_compile_options(Snake_Game PRIVATE -O3 -Wall -Wextra -Weffc++ -Wpedantic -Wunused -Werror )
 endif()
 
-add_custom_target(cppcheck ALL COMMAND cppcheck --enable=all ../src)
+add_custom_target(cppcheck ALL COMMAND cppcheck --enable=all --suppress=missingInclude ../src)
 add_custom_target(clang-format ALL COMMAND clang-format --style=file -i ../src/*
 )
