@@ -21,6 +21,8 @@ enum class CollisionResult
   NoCollision
 };
 
+using Screen = ftxui::ScreenInteractive;
+
 class GameController
 {
 public:
@@ -35,6 +37,7 @@ public:
 private:
   Player snake{};
   std::vector<Position> fruits{};
+  Canvas canvas{};
   int turnsSinceFruitSpawn{ 0 };
   int score{ 0 };
   std::atomic<GameAction> action{ GameAction::Continue };
@@ -51,7 +54,9 @@ private:
 
   void HandleCollisionFruit(const Position &playerPosition);
 
-  void Draw();
+  void Draw(Screen &screen);
+
+  void DrawGameOverScreen(Screen &screen);
 
   int CalculateScoreIncrement();
 };

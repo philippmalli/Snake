@@ -21,11 +21,10 @@ void GameController::Run()
   while (action == GameAction::Continue)// && !loop.HasQuitted() )
   {
     const auto timerStart = std::chrono::high_resolution_clock::now();
-    // loop.RunOnce();
 
     snake.UpdatePosition();
     HandleCollision();
-    Draw();
+    Draw(screen);
 
     screen.PostEvent(ftxui::Event::Custom);
 
@@ -37,6 +36,8 @@ void GameController::Run()
     std::this_thread::sleep_for(std::chrono::milliseconds(200) - duration);
   }
 
+  DrawGameOverScreen(screen);
+  screen.PostEvent(ftxui::Event::Custom);
 
   std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 
@@ -103,9 +104,9 @@ CollisionResult GameController::DetectCollison(const Position &playerPosition,
   return CollisionResult::NoCollision;
 }
 
-void GameController::Draw()
+void GameController::Draw(Screen &screen)
 {
-  Canvas canvas{};
+  canvas.Clear();
   canvas.SetBorder();
   canvas.AddTail(snake.GetTail());
   canvas.AddPlayer(snake.GetHeadPosition());
@@ -113,6 +114,13 @@ void GameController::Draw()
   canvas.SetScore(score);
 
   currentView = canvas.CreateView();
+  screen.PostEvent(ftxui::Event::Custom);
+}
+
+void GameController::DrawGameOverScreen(Screen &screen)
+{
+  currentView = canvas.CreateGameOverScreen();
+  screen.PostEvent(ftxui::Event::Custom);
 }
 
 int GameController::CalculateScoreIncrement()

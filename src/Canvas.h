@@ -16,10 +16,7 @@
 class Canvas
 {
 public:
-  /// <summary>
-  /// 1-D array to represent every slot of the playing field
-  /// </summary>
-  std::array<CanvasItem, CANVAS_WIDTH * CANVAS_HEIGHT> area{};
+  void Clear();
 
   void SetBorder();
 
@@ -31,23 +28,20 @@ public:
 
   void SetScore(int score) { this->score = score; }
 
-  // /// <summary>
-  // /// draw all elements on playing field to screen
-  // /// </summary>
-  // std::string Draw() const;
-
-  // std::vector<std::string> GenerateView() const;
-
   ftxui::Element CreateView() const;
 
+  ftxui::Element CreateGameOverScreen() const;
+
 private:
+  /// @brief 1-D array to represent every slot of the playing field
+  std::array<CanvasItem, CANVAS_WIDTH * CANVAS_HEIGHT> area{};
+
+  /// @brief the score to be displayed
   int score{ 0 };
 
-  void SetSprite(int index, Sprite pixel);
+  void SetSprite(int linearIndex, Sprite pixel);
 
-  void SetSprite(int x, int y, Sprite pixel);
+  void SetSprite(const Position &position, Sprite pixel);
 
-  void SetSprite(Position position, Sprite pixel);
-
-  static void ClearScreen();
+  ftxui::Element GenerateCanvasText() const;
 };
